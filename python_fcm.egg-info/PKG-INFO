@@ -1,0 +1,15 @@
+Metadata-Version: 1.1
+Name: python-fcm
+Version: 0.2
+Summary: Simple FCM notification
+Home-page: http://github.com/vipin08/halofun
+Author: Vipin Kumar
+Author-email: vpnkumar.kumar1@gmail.com
+License: MIT
+Description-Content-Type: UNKNOWN
+Description: Simple FCM notification
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Text Processing :: Linguistic
