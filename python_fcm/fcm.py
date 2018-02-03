@@ -9,12 +9,14 @@ class Fcm:
   FCM_MAX_RECIPIENTS = 1000
   FCM_LOW_PRIORITY = 'normal'
   FCM_HIGH_PRIORITY = 'high'
-  BODY =''
-  TITLE =''
-  ICON = ''
-  SOUND = ''
-  COLOR = ''
-  REGISTRATION_IDS = []
+  body =''
+  title =''
+  icon = ''
+  sound = ''
+  color = ''
+  notification_type= 1 # 1 for notification and other for data
+
+  REGISTRATION_IDS = [] # Client FCM token
 
   def __init__(self, api_key):
       if api_key:
@@ -25,7 +27,10 @@ class Fcm:
           raise AuthenticationError("Please provide the api_key in the google-services.json file")
 
   def message_body(self):
-  	{'notification': { 'body': self.BODY, 'title': self.TITLE, 'icon': self.ICON, 'sound': self.SOUND, 'vibrate': True, 'color': self.COLOR, 'priority': self.FCM_HIGH_PRIORITY}}
+    if((self.notification_type == 1) or (self.notification_type == '')):
+  	   {'notification': { 'body': self.body, 'title': self.title, 'icon': self.icon, 'sound': self.sound, 'vibrate': True, 'color': self.color, 'priority': self.FCM_HIGH_PRIORITY}}
+    else:
+      {'data': { 'body': self.body, 'title': self.title, 'icon': self.icon, 'sound': self.sound, 'vibrate': True, 'color': self.color, 'priority': self.FCM_HIGH_PRIORITY}}
 
 
   def build_body(self, registration_ids, options = {}):
@@ -38,18 +43,22 @@ class Fcm:
       raise AuthenticationError("Please provide the FCM Token")
 
     message = self.message_body()
-    body = self.build_body(self.REGISTRATION_IDS, message)
+    m_body = self.build_body(self.REGISTRATION_IDS, message)
+
     params = {
-      'body': body,
+      'body': m_body,
       'headers': {
         'Authorization': "key=" + self._FCM_API_KEY,
         'Content-Type': self.CONTANT_TYPE
       }
     }
-    print(params)
     r = requests.post(self.FCM_END_POINT, data = params)
+    return self.parse_response(r)
+
+  def parse_response(self, response_body):
+    response_data = {}
+    response_data['status'] = response_body.status_code
+    response_data['response'] = response_body.text
 
 
-# f = Fcm('asdasdsdsd')
-# # f.api_key = "hello"
-# f.fcm_data()
+
