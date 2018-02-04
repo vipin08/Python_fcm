@@ -5,10 +5,10 @@ def readme():
         return f.read()
 
 setup(name='python_fcm',
-      version='0.2',
+      version='0.1',
       description='Simple FCM notification',
       long_description='Simple FCM notification',
-      url='http://github.com/vipin08/halofun',
+      url='http://github.com/vipin08/python_fcm',
       author='Vipin Kumar',
       classifiers=[
         'Development Status :: 3 - Alpha',

@@ -1,6 +1,5 @@
 import requests
 import os
-
 class Fcm:
 
   CONTANT_TYPE = 'application/json'
@@ -52,13 +51,20 @@ class Fcm:
         'Content-Type': self.CONTANT_TYPE
       }
     }
-    r = requests.post(self.FCM_END_POINT, data = params)
-    return self.parse_response(r)
+    response = requests.post(self.FCM_END_POINT, data = params)
+    if(response.status_code == 200):
+      response_body = {'result':{'status': 'true', 'message': 'Succssfully Sent', 'response': response.body}}
+    elif(response.status_code == 400):
+      response_body = {'result':{'status': 'false', 'message': 'Json Fields are invalid','response': ''}}
+    elif(response.status_code == 401):
+      response_body = {'result':{'status': 'false', 'message': 'Authentication Error!','response': ''}}
+    elif(response.status_code == 503):
+      response_body = {'result':{'status': 'false', 'message': 'Server is temporarily unavailable.', 'response': ''}}
+    else:       
+      response_body= {'result':{'status': 'false', 'message': 'Server is temporarily unavailable.', 'response': ''}}
+    return response_body
 
-  def parse_response(self, response_body):
-    response_data = {}
-    response_data['status'] = response_body.status_code
-    response_data['response'] = response_body.text
+
 
 
 
